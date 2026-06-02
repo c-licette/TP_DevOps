@@ -1,0 +1,16 @@
+FROM node:24-alpine as build-stage
+WORKDIR /app
+COPY package.json tsconfig.json ./
+RUN npm install
+COPY server.ts ./
+RUN npm run build
+
+
+FROM node:24-alpine
+WORKDIR /app
+COPY --from=build-stage /app/dist/server.js  .
+COPY --from=build-stage /app/node_modules  ./node_modules
+
+USER node
+CMD ["node", "server.js"]
+
