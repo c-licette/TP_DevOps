@@ -1,10 +1,12 @@
 import express from "express";
+import os from "os";
 var app = express();
 
 const PORT = process.env.PING_LISTEN_PORT || 3000;
 const startTime = Date.now();
 
 app.get("/ping",(req: express.Request, res: express.Response) => {
+  console.log(`[/ping] requête traitée par le host: ${os.hostname()}`);
     res.json({headers: req.headers});
 });
 
